@@ -5,7 +5,9 @@
     :projection="projection"
     :projectionConfig="projectionConfig"
   >
-    <svg :viewBox="`0 0 ${width} ${height}`" class="rsm-svg" v-bind="$attrs" />
+    <svg :viewBox="`0 0 ${width} ${height}`" class="rsm-svg" v-bind="$attrs">
+      <slot />
+    </svg>
   </map-provider>
 </template>
 

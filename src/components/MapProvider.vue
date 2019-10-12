@@ -62,6 +62,11 @@ const makeProjection = ({
 };
 
 export default {
+  provide() {
+    return {
+      mapContext: this.value
+    };
+  },
   props: {
     width: Number,
     height: Number,

@@ -1,7 +1,7 @@
 
 export { default as ComposableMap } from "./components/ComposableMap.vue"
-// export { default as Geographies } from "./components/Geographies"
-// export { default as Geography } from "./components/Geography"
+export { default as Geographies } from "./components/Geographies.vue"
+export { default as Geography } from "./components/Geography.vue"
 // export { default as Graticule } from "./components/Graticule"
 // export { default as ZoomableGroup } from "./components/ZoomableGroup"
 // export { default as Sphere } from "./components/Sphere"
