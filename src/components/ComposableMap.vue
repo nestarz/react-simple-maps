@@ -21,7 +21,7 @@ export default {
     width: { type: Number, default: 800 },
     height: { type: Number, default: 600 },
     projection: { type: [String, Function], default: "geoEqualEarth" },
-    projectionConfig: { type: Object, default: {} }
+    projectionConfig: { type: Object, default: () => {} }
   }
 };
 </script>

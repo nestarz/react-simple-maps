@@ -2,9 +2,7 @@
   "name": "vue-simple-maps",
   "version": "0.0.0-beta.0",
   "description": "An svg map chart component built with and for Vue",
-  "main": "dist/index.js",
   "module": "dist/index.es.js",
-  "browser": "dist/index.umd.js",
   "files": [
     "dist"
   ],
