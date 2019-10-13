@@ -69,6 +69,6 @@ export default {
 </script>
 ```
 
-Check out the [live example](https://codesandbox.io/s/basic-map-wvlol)
+Check out the [live example](https://codesandbox.io/s/vue-simple-maps-15ol4)
 
 The above will render a world map using the [equal earth projection](https://observablehq.com/@d3/equal-earth). You can read more about this projection on [Shaded Relief](http://shadedrelief.com/ee_proj/) and on [Wikipedia](https://en.wikipedia.org/wiki/Equal_Earth_projection).
