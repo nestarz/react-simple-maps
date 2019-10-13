@@ -2,7 +2,7 @@
 <img src="https://img.shields.io/bundlephobia/minzip/vue-simple-maps@0.0.0-beta.0?color=%2328cb95&label=gzip" />
 
 # vue-simple-maps
-Create beautiful SVG maps in react with d3-geo and topojson using a declarative api.
+Create beautiful SVG maps in Vue with d3-geo and topojson using a declarative api.
 
 ### Why
 
