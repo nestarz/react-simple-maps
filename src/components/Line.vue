@@ -1,5 +1,5 @@
 <template>
-  <path :d="lineData" class="rsm-line" :stroke="stroke" :strokeWidth="strokeWidth" :fill="fill" />
+  <path :d="lineData" class="rsm-line" :stroke="stroke" :stroke-width="strokeWidth" :fill="fill" />
 </template>
 
 <script>
