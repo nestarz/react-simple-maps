@@ -1,6 +1,6 @@
 <template>
   <g class="rsm-geographies">
-    <slot v-bind="{geographies, path, projection}" />
+    <slot v-bind="{geographies}" />
   </g>
 </template>
 
@@ -13,10 +13,11 @@ import {
 } from "../utils";
 
 export default {
-  inject: ["mapContext"],
   props: {
     geography: [String, Object, Array],
-    parseGeographies: Function
+    parseGeographies: Function,
+    projection: [String, Function],
+    path: Function
   },
   data() {
     return {
@@ -40,12 +41,6 @@ export default {
     }
   },
   computed: {
-    path() {
-      return this.mapContext.path;
-    },
-    projection() {
-      return this.mapContext.projection;
-    },
     geographies() {
       return prepareFeatures(this.features, this.path);
     }

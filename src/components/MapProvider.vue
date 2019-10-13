@@ -1,6 +1,6 @@
 <template>
   <div class="provider">
-    <slot />
+    <slot v-bind="{path, projectionFunc}" />
   </div>
 </template>
 
@@ -62,33 +62,33 @@ const makeProjection = ({
 };
 
 export default {
-  provide() {
-    return {
-      mapContext: this.value
-    };
-  },
   props: {
     width: Number,
     height: Number,
     projection: [String, Function],
     projectionConfig: Object
   },
-  computed: {
-    value() {
-      const projection = makeProjection({
-        projectionConfig: this.projectionConfig,
-        projection: this.projection,
-        width: this.width,
-        height: this.height
-      });
-
-      return {
-        width: this.width,
-        height: this.height,
-        projection,
-        path: geoPath().projection(projection)
-      };
-    }
+  data() {
+    return {
+      projectionFunc: null,
+      path: null
+    };
+  },
+  mounted() {
+    this.$watch(
+      vm => [vm.width, vm.height, vm.projection, vm.projectionConfig],
+      val => {
+        const projection = makeProjection({
+          projectionConfig: this.projectionConfig,
+          projection: this.projection,
+          width: this.width,
+          height: this.height
+        });
+        this.projectionFunc = projection;
+        this.path = geoPath().projection(projection);
+      },
+      { immediate: true, deep: true }
+    );
   }
 };
 </script>
