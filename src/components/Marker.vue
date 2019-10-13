@@ -2,12 +2,12 @@
   <g
     class="rsm-marker"
     :transform="transform"
-    :onMouseEnter="handleMouseEnter"
-    :onMouseLeave="handleMouseLeave"
-    :onFocus="handleFocus"
-    :onBlur="handleBlur"
-    :onMouseDown="handleMouseDown"
-    :onMouseUp="handleMouseUp"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
+    v-on:focus.native="handleFocus"
+    @blur="handleBlur"
+    @mousedown="handleMouseDown"
+    @mouseup="handleMouseUp"
   >
     <slot />
   </g>

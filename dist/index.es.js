@@ -2978,16 +2978,18 @@ var __vue_render__$3 = function() {
     "path",
     {
       staticClass: "rsm-geography",
-      attrs: {
-        role: "geography",
-        tabindex: "0",
-        d: _vm.geography.svgPath,
-        onMouseEnter: _vm.handleMouseEnter,
-        onMouseLeave: _vm.handleMouseLeave,
-        onFocus: _vm.handleFocus,
-        onBlur: _vm.handleBlur,
-        onMouseDown: _vm.handleMouseDown,
-        onMouseUp: _vm.handleMouseUp
+      attrs: { role: "geography", tabindex: "0", d: _vm.geography.svgPath },
+      on: {
+        mouseenter: _vm.handleMouseEnter,
+        mouseleave: _vm.handleMouseLeave,
+        blur: _vm.handleBlur,
+        mousedown: _vm.handleMouseDown,
+        mouseup: _vm.handleMouseUp
+      },
+      nativeOn: {
+        focus: function($event) {
+          return _vm.handleFocus($event)
+        }
       }
     },
     [_vm._t("default")],
@@ -3306,14 +3308,18 @@ var __vue_render__$6 = function() {
     "g",
     {
       staticClass: "rsm-marker",
-      attrs: {
-        transform: _vm.transform,
-        onMouseEnter: _vm.handleMouseEnter,
-        onMouseLeave: _vm.handleMouseLeave,
-        onFocus: _vm.handleFocus,
-        onBlur: _vm.handleBlur,
-        onMouseDown: _vm.handleMouseDown,
-        onMouseUp: _vm.handleMouseUp
+      attrs: { transform: _vm.transform },
+      on: {
+        mouseenter: _vm.handleMouseEnter,
+        mouseleave: _vm.handleMouseLeave,
+        blur: _vm.handleBlur,
+        mousedown: _vm.handleMouseDown,
+        mouseup: _vm.handleMouseUp
+      },
+      nativeOn: {
+        focus: function($event) {
+          return _vm.handleFocus($event)
+        }
       }
     },
     [_vm._t("default")],

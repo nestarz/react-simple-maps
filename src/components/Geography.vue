@@ -4,12 +4,12 @@
     tabindex="0"
     class="rsm-geography"
     :d="geography.svgPath"
-    :onMouseEnter="handleMouseEnter"
-    :onMouseLeave="handleMouseLeave"
-    :onFocus="handleFocus"
-    :onBlur="handleBlur"
-    :onMouseDown="handleMouseDown"
-    :onMouseUp="handleMouseUp"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
+    v-on:focus.native="handleFocus"
+    @blur="handleBlur"
+    @mousedown="handleMouseDown"
+    @mouseup="handleMouseUp"
   >
     <slot />
   </path>
