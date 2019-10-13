@@ -9,7 +9,7 @@
       :d="spherePath"
       :fill="fill"
       :stroke="stroke"
-      :strokeWidth="strokeWidth"
+      :stroke-width="strokeWidth"
       class="rsm-sphere"
     />
   </span>
