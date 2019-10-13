@@ -3242,7 +3242,6 @@ __vue_render__$5._withStripped = true;
 var script$6 = {
   props: {
     coordinates: { type: Array, required: true },
-    geography: { type: Object, required: true },
     projection: { type: Function, required: true },
     onMouseEnter: Function,
     onMouseLeave: Function,
