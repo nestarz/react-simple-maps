@@ -53,6 +53,7 @@ var abs = Math.abs;
 var atan = Math.atan;
 var atan2 = Math.atan2;
 var cos = Math.cos;
+var ceil = Math.ceil;
 var exp = Math.exp;
 var log = Math.log;
 var pow = Math.pow;
@@ -534,6 +535,20 @@ function ascendingComparator(f) {
 }
 
 var ascendingBisect = bisector(ascending);
+
+function range(start, stop, step) {
+  start = +start, stop = +stop, step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
+
+  var i = -1,
+      n = Math.max(0, Math.ceil((stop - start) / step)) | 0,
+      range = new Array(n);
+
+  while (++i < n) {
+    range[i] = start + i * step;
+  }
+
+  return range;
+}
 
 function merge(arrays) {
   var n = arrays.length,
@@ -1174,6 +1189,105 @@ function clipRectangle(x0, y0, x1, y1) {
 }
 
 var lengthSum = adder();
+
+function graticuleX(y0, y1, dy) {
+  var y = range(y0, y1 - epsilon, dy).concat(y1);
+  return function(x) { return y.map(function(y) { return [x, y]; }); };
+}
+
+function graticuleY(x0, x1, dx) {
+  var x = range(x0, x1 - epsilon, dx).concat(x1);
+  return function(y) { return x.map(function(x) { return [x, y]; }); };
+}
+
+function graticule() {
+  var x1, x0, X1, X0,
+      y1, y0, Y1, Y0,
+      dx = 10, dy = dx, DX = 90, DY = 360,
+      x, y, X, Y,
+      precision = 2.5;
+
+  function graticule() {
+    return {type: "MultiLineString", coordinates: lines()};
+  }
+
+  function lines() {
+    return range(ceil(X0 / DX) * DX, X1, DX).map(X)
+        .concat(range(ceil(Y0 / DY) * DY, Y1, DY).map(Y))
+        .concat(range(ceil(x0 / dx) * dx, x1, dx).filter(function(x) { return abs(x % DX) > epsilon; }).map(x))
+        .concat(range(ceil(y0 / dy) * dy, y1, dy).filter(function(y) { return abs(y % DY) > epsilon; }).map(y));
+  }
+
+  graticule.lines = function() {
+    return lines().map(function(coordinates) { return {type: "LineString", coordinates: coordinates}; });
+  };
+
+  graticule.outline = function() {
+    return {
+      type: "Polygon",
+      coordinates: [
+        X(X0).concat(
+        Y(Y1).slice(1),
+        X(X1).reverse().slice(1),
+        Y(Y0).reverse().slice(1))
+      ]
+    };
+  };
+
+  graticule.extent = function(_) {
+    if (!arguments.length) return graticule.extentMinor();
+    return graticule.extentMajor(_).extentMinor(_);
+  };
+
+  graticule.extentMajor = function(_) {
+    if (!arguments.length) return [[X0, Y0], [X1, Y1]];
+    X0 = +_[0][0], X1 = +_[1][0];
+    Y0 = +_[0][1], Y1 = +_[1][1];
+    if (X0 > X1) _ = X0, X0 = X1, X1 = _;
+    if (Y0 > Y1) _ = Y0, Y0 = Y1, Y1 = _;
+    return graticule.precision(precision);
+  };
+
+  graticule.extentMinor = function(_) {
+    if (!arguments.length) return [[x0, y0], [x1, y1]];
+    x0 = +_[0][0], x1 = +_[1][0];
+    y0 = +_[0][1], y1 = +_[1][1];
+    if (x0 > x1) _ = x0, x0 = x1, x1 = _;
+    if (y0 > y1) _ = y0, y0 = y1, y1 = _;
+    return graticule.precision(precision);
+  };
+
+  graticule.step = function(_) {
+    if (!arguments.length) return graticule.stepMinor();
+    return graticule.stepMajor(_).stepMinor(_);
+  };
+
+  graticule.stepMajor = function(_) {
+    if (!arguments.length) return [DX, DY];
+    DX = +_[0], DY = +_[1];
+    return graticule;
+  };
+
+  graticule.stepMinor = function(_) {
+    if (!arguments.length) return [dx, dy];
+    dx = +_[0], dy = +_[1];
+    return graticule;
+  };
+
+  graticule.precision = function(_) {
+    if (!arguments.length) return precision;
+    precision = +_;
+    x = graticuleX(y0, y1, 90);
+    y = graticuleY(x0, x1, precision);
+    X = graticuleX(Y0, Y1, 90);
+    Y = graticuleY(X0, X1, precision);
+    return graticule;
+  };
+
+  return graticule
+      .extentMajor([[-180, -90 + epsilon], [180, 90 - epsilon]])
+      .extentMinor([[-180, -80 - epsilon], [180, 80 + epsilon]]);
+}
 
 function identity(x) {
   return x;
@@ -2912,12 +3026,409 @@ __vue_render__$3._withStripped = true;
 
 var script$4 = {
   props: {
+    fill: { type: String, default: "transparent" },
+    stroke: { type: String, default: "currentcolor" },
+    step: { type: Array, default: [10, 10] },
+    path: { type: Function, required: true }
+  },
+  computed: {
+    graticulePath() {
+      return this.path(graticule().step(this.step)());
+    }
+  }
+};
+
+/* script */
+const __vue_script__$4 = script$4;
+
+/* template */
+var __vue_render__$4 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c("path", {
+    staticClass: "rsm-graticule",
+    attrs: { d: _vm.graticulePath, fill: _vm.fill, stroke: _vm.stroke }
+  })
+};
+var __vue_staticRenderFns__$4 = [];
+__vue_render__$4._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__$4 = undefined;
+  /* scoped */
+  const __vue_scope_id__$4 = undefined;
+  /* module identifier */
+  const __vue_module_identifier__$4 = undefined;
+  /* functional template */
+  const __vue_is_functional_template__$4 = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+
+  
+  var Graticule = normalizeComponent_1(
+    { render: __vue_render__$4, staticRenderFns: __vue_staticRenderFns__$4 },
+    __vue_inject_styles__$4,
+    __vue_script__$4,
+    __vue_scope_id__$4,
+    __vue_is_functional_template__$4,
+    __vue_module_identifier__$4,
+    undefined,
+    undefined
+  );
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var script$5 = {
+  props: {
+    id: { type: String, default: "rsm-sphere" },
+    fill: { type: String, default: "transparent" },
+    stroke: { type: String, default: "currentcolor" },
+    strokeWidth: { type: Number, default: 0.5 },
+    path: { type: Function, required: true }
+  },
+  computed: {
+    spherePath() {
+      return this.path({ type: "Sphere" });
+    }
+  }
+};
+
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
+function createInjector(context) {
+  return function (id, style) {
+    return addStyle(id, style);
+  };
+}
+var HEAD;
+var styles = {};
+
+function addStyle(id, css) {
+  var group = isOldIE ? css.media || 'default' : id;
+  var style = styles[group] || (styles[group] = {
+    ids: new Set(),
+    styles: []
+  });
+
+  if (!style.ids.has(id)) {
+    style.ids.add(id);
+    var code = css.source;
+
+    if (css.map) {
+      // https://developer.chrome.com/devtools/docs/javascript-debugging
+      // this makes source maps inside style tags work properly in Chrome
+      code += '\n/*# sourceURL=' + css.map.sources[0] + ' */'; // http://stackoverflow.com/a/26603875
+
+      code += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) + ' */';
+    }
+
+    if (!style.element) {
+      style.element = document.createElement('style');
+      style.element.type = 'text/css';
+      if (css.media) style.element.setAttribute('media', css.media);
+
+      if (HEAD === undefined) {
+        HEAD = document.head || document.getElementsByTagName('head')[0];
+      }
+
+      HEAD.appendChild(style.element);
+    }
+
+    if ('styleSheet' in style.element) {
+      style.styles.push(code);
+      style.element.styleSheet.cssText = style.styles.filter(Boolean).join('\n');
+    } else {
+      var index = style.ids.size - 1;
+      var textNode = document.createTextNode(code);
+      var nodes = style.element.childNodes;
+      if (nodes[index]) style.element.removeChild(nodes[index]);
+      if (nodes.length) style.element.insertBefore(textNode, nodes[index]);else style.element.appendChild(textNode);
+    }
+  }
+}
+
+var browser = createInjector;
+
+/* script */
+const __vue_script__$5 = script$5;
+
+/* template */
+var __vue_render__$5 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c("span", [
+    _c("defs", [
+      _c("clipPath", { attrs: { id: _vm.id } }, [
+        _c("path", { attrs: { d: _vm.spherePath } })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("path", {
+      staticClass: "rsm-sphere",
+      attrs: {
+        d: _vm.spherePath,
+        fill: _vm.fill,
+        stroke: _vm.stroke,
+        strokeWidth: _vm.strokeWidth
+      }
+    })
+  ])
+};
+var __vue_staticRenderFns__$5 = [];
+__vue_render__$5._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__$5 = function (inject) {
+    if (!inject) return
+    inject("data-v-9f3589be_0", { source: "\n.rsm-sphere[data-v-9f3589be] {\n  pointer-events: none;\n}\n", map: {"version":3,"sources":["/Users/eliasrhouzlane/projects/oss/vue-simple-maps/src/components/Sphere.vue"],"names":[],"mappings":";AAmCA;EACA,oBAAA;AACA","file":"Sphere.vue","sourcesContent":["<template>\n  <span>\n    <defs>\n      <clipPath :id=\"id\">\n        <path :d=\"spherePath\" />\n      </clipPath>\n    </defs>\n    <path\n      :d=\"spherePath\"\n      :fill=\"fill\"\n      :stroke=\"stroke\"\n      :strokeWidth=\"strokeWidth\"\n      class=\"rsm-sphere\"\n    />\n  </span>\n</template>\n\n<script>\nexport default {\n  props: {\n    id: { type: String, default: \"rsm-sphere\" },\n    fill: { type: String, default: \"transparent\" },\n    stroke: { type: String, default: \"currentcolor\" },\n    strokeWidth: { type: Number, default: 0.5 },\n    path: { type: Function, required: true }\n  },\n  computed: {\n    spherePath() {\n      return this.path({ type: \"Sphere\" });\n    }\n  }\n};\n</script>\n\n<style scoped>\n.rsm-sphere {\n  pointer-events: none;\n}\n</style>\n"]}, media: undefined });
+
+  };
+  /* scoped */
+  const __vue_scope_id__$5 = "data-v-9f3589be";
+  /* module identifier */
+  const __vue_module_identifier__$5 = undefined;
+  /* functional template */
+  const __vue_is_functional_template__$5 = false;
+  /* style inject SSR */
+  
+
+  
+  var Sphere = normalizeComponent_1(
+    { render: __vue_render__$5, staticRenderFns: __vue_staticRenderFns__$5 },
+    __vue_inject_styles__$5,
+    __vue_script__$5,
+    __vue_scope_id__$5,
+    __vue_is_functional_template__$5,
+    __vue_module_identifier__$5,
+    browser,
+    undefined
+  );
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var script$6 = {
+  props: {
+    coordinates: { type: Array, required: true },
+    geography: { type: Object, required: true },
+    projection: { type: Function, required: true },
+    onMouseEnter: Function,
+    onMouseLeave: Function,
+    onMouseDown: Function,
+    onMouseUp: Function,
+    onFocus: Function,
+    onBlur: Function
+  },
+  computed: {
+    transform() {
+      const [x, y] = this.projection(this.coordinates);
+      return `translate(${x}, ${y})`;
+    }
+  },
+  methods: {
+    handleMouseEnter(evt) {
+      this.isFocus = true;
+      if (this.onMouseEnter) this.onMouseEnter(evt);
+    },
+    handleMouseLeave(evt) {
+      this.isFocused = false;
+      if (this.isPressed) this.isPressed = false;
+      if (this.onMouseLeave) this.onMouseLeave(evt);
+    },
+    handleFocus(evt) {
+      this.isFocus = true;
+      if (this.onFocus) this.onFocus(evt);
+    },
+    handleBlur(evt) {
+      this.isFocus = false;
+      if (this.isPressed) this.isPressed = false;
+      if (this.onBlur) this.onBlur(evt);
+    },
+    handleMouseDown(evt) {
+      this.isPressed = true;
+      if (this.onMouseDown) this.onMouseDown(evt);
+    },
+    handleMouseUp(evt) {
+      this.isPressed = false;
+      if (this.onMouseUp) this.onMouseUp(evt);
+    }
+  },
+  watch: {
+    isPressed() {
+      this.$emit("isPressed", this.isPressed);
+    },
+    isFocused() {
+      this.$emit("isFocused", this.isFocused);
+    }
+  }
+};
+
+/* script */
+const __vue_script__$6 = script$6;
+
+/* template */
+var __vue_render__$6 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c(
+    "g",
+    {
+      staticClass: "rsm-marker",
+      attrs: {
+        transform: _vm.transform,
+        onMouseEnter: _vm.handleMouseEnter,
+        onMouseLeave: _vm.handleMouseLeave,
+        onFocus: _vm.handleFocus,
+        onBlur: _vm.handleBlur,
+        onMouseDown: _vm.handleMouseDown,
+        onMouseUp: _vm.handleMouseUp
+      }
+    },
+    [_vm._t("default")],
+    2
+  )
+};
+var __vue_staticRenderFns__$6 = [];
+__vue_render__$6._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__$6 = undefined;
+  /* scoped */
+  const __vue_scope_id__$6 = undefined;
+  /* module identifier */
+  const __vue_module_identifier__$6 = undefined;
+  /* functional template */
+  const __vue_is_functional_template__$6 = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+
+  
+  var Marker = normalizeComponent_1(
+    { render: __vue_render__$6, staticRenderFns: __vue_staticRenderFns__$6 },
+    __vue_inject_styles__$6,
+    __vue_script__$6,
+    __vue_scope_id__$6,
+    __vue_is_functional_template__$6,
+    __vue_module_identifier__$6,
+    undefined,
+    undefined
+  );
+
+//
+//
+//
+//
+
+var script$7 = {
+  props: {
+    from: { type: Array, default: [0, 0] },
+    to: { type: Array, default: [0, 0] },
+    coordinates: Array,
+    stroke: { type: String, default: "currentcolor" },
+    strokeWidth: { type: Number, default: 3 },
+    fill: { type: String, default: "transparent" },
+    path: { type: Function, required: true }
+  },
+  computed: {
+    lineData() {
+      return this.path({
+        type: "LineString",
+        coordinates: this.coordinates || [this.from, this.to]
+      });
+    }
+  }
+};
+
+/* script */
+const __vue_script__$7 = script$7;
+
+/* template */
+var __vue_render__$7 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c("path", {
+    staticClass: "rsm-line",
+    attrs: {
+      d: _vm.lineData,
+      stroke: _vm.stroke,
+      strokeWidth: _vm.strokeWidth,
+      fill: _vm.fill
+    }
+  })
+};
+var __vue_staticRenderFns__$7 = [];
+__vue_render__$7._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__$7 = undefined;
+  /* scoped */
+  const __vue_scope_id__$7 = undefined;
+  /* module identifier */
+  const __vue_module_identifier__$7 = undefined;
+  /* functional template */
+  const __vue_is_functional_template__$7 = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+
+  
+  var Line = normalizeComponent_1(
+    { render: __vue_render__$7, staticRenderFns: __vue_staticRenderFns__$7 },
+    __vue_inject_styles__$7,
+    __vue_script__$7,
+    __vue_scope_id__$7,
+    __vue_is_functional_template__$7,
+    __vue_module_identifier__$7,
+    undefined,
+    undefined
+  );
+
+//
+
+var script$8 = {
+  props: {
     subject: Array,
     dx: { type: Number, default: 30 },
     dy: { type: Number, default: 30 },
     curve: { type: Number, default: 0 },
     connectorProps: { type: Object, default: { stroke: "#000" } },
-    className: String,
     projection: Function
   },
   computed: {
@@ -2938,20 +3449,16 @@ var script$4 = {
 };
 
 /* script */
-const __vue_script__$4 = script$4;
+const __vue_script__$8 = script$8;
 
 /* template */
-var __vue_render__$4 = function() {
+var __vue_render__$8 = function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
   return _c(
     "g",
-    {
-      staticClass: "rsm-annotation",
-      class: { className: _vm.className },
-      attrs: { transform: _vm.translate }
-    },
+    { staticClass: "rsm-annotation", attrs: { transform: _vm.translate } },
     [
       _c(
         "path",
@@ -2968,17 +3475,17 @@ var __vue_render__$4 = function() {
     2
   )
 };
-var __vue_staticRenderFns__$4 = [];
-__vue_render__$4._withStripped = true;
+var __vue_staticRenderFns__$8 = [];
+__vue_render__$8._withStripped = true;
 
   /* style */
-  const __vue_inject_styles__$4 = undefined;
+  const __vue_inject_styles__$8 = undefined;
   /* scoped */
-  const __vue_scope_id__$4 = undefined;
+  const __vue_scope_id__$8 = undefined;
   /* module identifier */
-  const __vue_module_identifier__$4 = undefined;
+  const __vue_module_identifier__$8 = undefined;
   /* functional template */
-  const __vue_is_functional_template__$4 = false;
+  const __vue_is_functional_template__$8 = false;
   /* style inject */
   
   /* style inject SSR */
@@ -2986,14 +3493,14 @@ __vue_render__$4._withStripped = true;
 
   
   var Annotation = normalizeComponent_1(
-    { render: __vue_render__$4, staticRenderFns: __vue_staticRenderFns__$4 },
-    __vue_inject_styles__$4,
-    __vue_script__$4,
-    __vue_scope_id__$4,
-    __vue_is_functional_template__$4,
-    __vue_module_identifier__$4,
+    { render: __vue_render__$8, staticRenderFns: __vue_staticRenderFns__$8 },
+    __vue_inject_styles__$8,
+    __vue_script__$8,
+    __vue_scope_id__$8,
+    __vue_is_functional_template__$8,
+    __vue_module_identifier__$8,
     undefined,
     undefined
   );
 
-export { Annotation, ComposableMap, Geographies, Geography };
+export { Annotation, ComposableMap, Geographies, Geography, Graticule, Line, Marker, Sphere };
