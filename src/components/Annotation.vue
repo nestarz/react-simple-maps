@@ -1,5 +1,5 @@
 <template>
-  <g :transform="translate" class="rsm-annotation" :class="{ className }">
+  <g :transform="translate" class="rsm-annotation">
     <path :d="connectorPath" fill="transparent" v-bind="connectorProps" />
     <slot />
   </g>
@@ -15,7 +15,6 @@ export default {
     dy: { type: Number, default: 30 },
     curve: { type: Number, default: 0 },
     connectorProps: { type: Object, default: { stroke: "#000" } },
-    className: String,
     projection: Function
   },
   computed: {
