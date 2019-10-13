@@ -72,8 +72,3 @@ export default {
 Check out the [live example](https://codesandbox.io/s/basic-map-wvlol)
 
 The above will render a world map using the [equal earth projection](https://observablehq.com/@d3/equal-earth). You can read more about this projection on [Shaded Relief](http://shadedrelief.com/ee_proj/) and on [Wikipedia](https://en.wikipedia.org/wiki/Equal_Earth_projection).
-
-For other examples and components, check out the [documentation](https://www.react-simple-maps.io/docs/getting-started).
-
-### License
-MIT licensed. Copyright (c) Richard Zimerman 2017. See [LICENSE.md](https://github.com/zcreativelabs/react-simple-maps/blob/master/LICENSE) for more details.
