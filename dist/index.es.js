@@ -3188,7 +3188,7 @@ var __vue_render__$5 = function() {
         d: _vm.spherePath,
         fill: _vm.fill,
         stroke: _vm.stroke,
-        strokeWidth: _vm.strokeWidth
+        "stroke-width": _vm.strokeWidth
       }
     })
   ])
@@ -3199,11 +3199,11 @@ __vue_render__$5._withStripped = true;
   /* style */
   const __vue_inject_styles__$5 = function (inject) {
     if (!inject) return
-    inject("data-v-9f3589be_0", { source: "\n.rsm-sphere[data-v-9f3589be] {\n  pointer-events: none;\n}\n", map: {"version":3,"sources":["/Users/eliasrhouzlane/projects/oss/vue-simple-maps/src/components/Sphere.vue"],"names":[],"mappings":";AAmCA;EACA,oBAAA;AACA","file":"Sphere.vue","sourcesContent":["<template>\n  <span>\n    <defs>\n      <clipPath :id=\"id\">\n        <path :d=\"spherePath\" />\n      </clipPath>\n    </defs>\n    <path\n      :d=\"spherePath\"\n      :fill=\"fill\"\n      :stroke=\"stroke\"\n      :strokeWidth=\"strokeWidth\"\n      class=\"rsm-sphere\"\n    />\n  </span>\n</template>\n\n<script>\nexport default {\n  props: {\n    id: { type: String, default: \"rsm-sphere\" },\n    fill: { type: String, default: \"transparent\" },\n    stroke: { type: String, default: \"currentcolor\" },\n    strokeWidth: { type: Number, default: 0.5 },\n    path: { type: Function, required: true }\n  },\n  computed: {\n    spherePath() {\n      return this.path({ type: \"Sphere\" });\n    }\n  }\n};\n</script>\n\n<style scoped>\n.rsm-sphere {\n  pointer-events: none;\n}\n</style>\n"]}, media: undefined });
+    inject("data-v-166b2d68_0", { source: "\n.rsm-sphere[data-v-166b2d68] {\n  pointer-events: none;\n}\n", map: {"version":3,"sources":["/Users/eliasrhouzlane/projects/oss/vue-simple-maps/src/components/Sphere.vue"],"names":[],"mappings":";AAmCA;EACA,oBAAA;AACA","file":"Sphere.vue","sourcesContent":["<template>\n  <span>\n    <defs>\n      <clipPath :id=\"id\">\n        <path :d=\"spherePath\" />\n      </clipPath>\n    </defs>\n    <path\n      :d=\"spherePath\"\n      :fill=\"fill\"\n      :stroke=\"stroke\"\n      :stroke-width=\"strokeWidth\"\n      class=\"rsm-sphere\"\n    />\n  </span>\n</template>\n\n<script>\nexport default {\n  props: {\n    id: { type: String, default: \"rsm-sphere\" },\n    fill: { type: String, default: \"transparent\" },\n    stroke: { type: String, default: \"currentcolor\" },\n    strokeWidth: { type: Number, default: 0.5 },\n    path: { type: Function, required: true }\n  },\n  computed: {\n    spherePath() {\n      return this.path({ type: \"Sphere\" });\n    }\n  }\n};\n</script>\n\n<style scoped>\n.rsm-sphere {\n  pointer-events: none;\n}\n</style>\n"]}, media: undefined });
 
   };
   /* scoped */
-  const __vue_scope_id__$5 = "data-v-9f3589be";
+  const __vue_scope_id__$5 = "data-v-166b2d68";
   /* module identifier */
   const __vue_module_identifier__$5 = undefined;
   /* functional template */
@@ -3387,7 +3387,7 @@ var __vue_render__$7 = function() {
     attrs: {
       d: _vm.lineData,
       stroke: _vm.stroke,
-      strokeWidth: _vm.strokeWidth,
+      "stroke-width": _vm.strokeWidth,
       fill: _vm.fill
     }
   })
