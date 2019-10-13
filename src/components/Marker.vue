@@ -17,7 +17,6 @@
 export default {
   props: {
     coordinates: { type: Array, required: true },
-    geography: { type: Object, required: true },
     projection: { type: Function, required: true },
     onMouseEnter: Function,
     onMouseLeave: Function,
