@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import useZoomPan from "./useZoomPan";
+import useZoomPan from "./useZoomPan"; // not working with vue yet
 
 export default {
   props: {
