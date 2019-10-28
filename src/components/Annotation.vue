@@ -1,6 +1,6 @@
 <template>
   <g :transform="translate" class="rsm-annotation">
-    <path :d="connectorPath" fill="transparent" v-bind="connectorProps" />
+    <path :d="connectorPath" fill="transparent" v-bind="$attrs" />
     <slot />
   </g>
 </template>
@@ -9,17 +9,19 @@
 import { createConnectorPath } from "../utils";
 
 export default {
+  inject: ["context"],
+  inheritAttrs: false,
   props: {
     subject: Array,
     dx: { type: Number, default: 30 },
     dy: { type: Number, default: 30 },
     curve: { type: Number, default: 0 },
-    connectorProps: { type: Object, default: { stroke: "#000" } },
-    projection: Function
+    connectorProps: { type: Object, default: { stroke: "#000" } }
   },
   computed: {
     point() {
-      const point = this.projection(this.subject);
+      if (!this.context.projection) return { x: 0, y: 0 };
+      const point = this.context.projection(this.subject);
       return {
         x: point[0],
         y: point[1]

@@ -15,9 +15,9 @@
 
 <script>
 export default {
+  inject: ["context"],
   props: {
     coordinates: { type: Array, required: true },
-    projection: { type: Function, required: true },
     onMouseEnter: Function,
     onMouseLeave: Function,
     onMouseDown: Function,
@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     transform() {
-      const [x, y] = this.projection(this.coordinates);
+      const [x, y] = this.context.projection(this.coordinates);
       return `translate(${x}, ${y})`;
     }
   },

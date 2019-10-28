@@ -68,6 +68,16 @@ export default {
     projection: [String, Function],
     projectionConfig: Object
   },
+  provide() {
+    const context = {};
+    Object.defineProperty(context, "projection", {
+      get: () => this.projectionFunc
+    });
+    Object.defineProperty(context, "path", {
+      get: () => this.path
+    });
+    return { context };
+  },
   data() {
     return {
       projectionFunc: null,

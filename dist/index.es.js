@@ -2432,6 +2432,16 @@ var script = {
     projection: [String, Function],
     projectionConfig: Object
   },
+  provide() {
+    const context = {};
+    Object.defineProperty(context, "projection", {
+      get: () => this.projectionFunc
+    });
+    Object.defineProperty(context, "path", {
+      get: () => this.path
+    });
+    return { context };
+  },
   data() {
     return {
       projectionFunc: null,
@@ -2612,48 +2622,33 @@ var __vue_render__$1 = function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c("map-provider", {
-    attrs: {
-      width: _vm.width,
-      height: _vm.height,
-      projection: _vm.projection,
-      projectionConfig: _vm.projectionConfig
+  return _c(
+    "map-provider",
+    {
+      attrs: {
+        width: _vm.width,
+        height: _vm.height,
+        projection: _vm.projection,
+        projectionConfig: _vm.projectionConfig
+      }
     },
-    scopedSlots: _vm._u(
-      [
-        {
-          key: "default",
-          fn: function(ref) {
-            var path = ref.path;
-            var projectionFunc = ref.projectionFunc;
-            return [
-              _c(
-                "svg",
-                _vm._b(
-                  {
-                    staticClass: "rsm-svg",
-                    attrs: { viewBox: "0 0 " + _vm.width + " " + _vm.height }
-                  },
-                  "svg",
-                  _vm.$attrs,
-                  false
-                ),
-                [
-                  _vm._t("default", null, null, {
-                    path: path,
-                    projectionFunc: projectionFunc
-                  })
-                ],
-                2
-              )
-            ]
-          }
-        }
-      ],
-      null,
-      true
-    )
-  })
+    [
+      _c(
+        "svg",
+        _vm._b(
+          {
+            staticClass: "rsm-svg",
+            attrs: { viewBox: "0 0 " + _vm.width + " " + _vm.height }
+          },
+          "svg",
+          _vm.$attrs,
+          false
+        ),
+        [_vm._t("default")],
+        2
+      )
+    ]
+  )
 };
 var __vue_staticRenderFns__$1 = [];
 __vue_render__$1._withStripped = true;
@@ -2820,11 +2815,10 @@ function isString(geo) { return typeof geo === "string" }
 //
 
 var script$2 = {
+  inject: ["context"],
   props: {
     geography: [String, Object, Array],
-    parseGeographies: Function,
-    projection: [String, Function],
-    path: Function
+    parseGeographies: Function
   },
   data() {
     return {
@@ -2849,7 +2843,7 @@ var script$2 = {
   },
   computed: {
     geographies() {
-      return prepareFeatures(this.features, this.path);
+      return prepareFeatures(this.features, this.context.path);
     }
   }
 };
@@ -3242,9 +3236,9 @@ __vue_render__$5._withStripped = true;
 //
 
 var script$6 = {
+  inject: ["context"],
   props: {
     coordinates: { type: Array, required: true },
-    projection: { type: Function, required: true },
     onMouseEnter: Function,
     onMouseLeave: Function,
     onMouseDown: Function,
@@ -3254,7 +3248,7 @@ var script$6 = {
   },
   computed: {
     transform() {
-      const [x, y] = this.projection(this.coordinates);
+      const [x, y] = this.context.projection(this.coordinates);
       return `translate(${x}, ${y})`;
     }
   },
@@ -3428,17 +3422,19 @@ __vue_render__$7._withStripped = true;
 //
 
 var script$8 = {
+  inject: ["context"],
+  inheritAttrs: false,
   props: {
     subject: Array,
     dx: { type: Number, default: 30 },
     dy: { type: Number, default: 30 },
     curve: { type: Number, default: 0 },
-    connectorProps: { type: Object, default: { stroke: "#000" } },
-    projection: Function
+    connectorProps: { type: Object, default: { stroke: "#000" } }
   },
   computed: {
     point() {
-      const point = this.projection(this.subject);
+      if (!this.context.projection) return { x: 0, y: 0 };
+      const point = this.context.projection(this.subject);
       return {
         x: point[0],
         y: point[1]
@@ -3470,7 +3466,7 @@ var __vue_render__$8 = function() {
         _vm._b(
           { attrs: { d: _vm.connectorPath, fill: "transparent" } },
           "path",
-          _vm.connectorProps,
+          _vm.$attrs,
           false
         )
       ),

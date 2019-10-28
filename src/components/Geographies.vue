@@ -13,11 +13,10 @@ import {
 } from "../utils";
 
 export default {
+  inject: ["context"],
   props: {
     geography: [String, Object, Array],
-    parseGeographies: Function,
-    projection: [String, Function],
-    path: Function
+    parseGeographies: Function
   },
   data() {
     return {
@@ -42,7 +41,7 @@ export default {
   },
   computed: {
     geographies() {
-      return prepareFeatures(this.features, this.path);
+      return prepareFeatures(this.features, this.context.path);
     }
   }
 };
