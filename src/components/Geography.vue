@@ -1,7 +1,6 @@
 <template>
   <path
     role="geography"
-    tabindex="0"
     class="rsm-geography"
     :d="geography.svgPath"
     @mouseenter="handleMouseEnter"

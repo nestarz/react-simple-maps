@@ -5,6 +5,9 @@
 </template>
 
 <script>
+import { select } from "d3";
+import { zoom, drag } from "./useZoom.js";
+
 import {
   geoPath,
   geoEqualEarth,
@@ -66,12 +69,16 @@ export default {
     width: Number,
     height: Number,
     projection: [String, Function],
-    projectionConfig: Object
+    projectionConfig: Object,
+    svg: SVGSVGElement,
   },
   provide() {
     const context = {};
     Object.defineProperty(context, "projection", {
       get: () => this.projectionFunc
+    });
+    Object.defineProperty(context, "test", {
+      get: () => this.test
     });
     Object.defineProperty(context, "path", {
       get: () => this.path
@@ -81,12 +88,14 @@ export default {
   data() {
     return {
       projectionFunc: null,
-      path: null
+      path: null,
+      test: null
     };
   },
   mounted() {
+    setInterval(() => this.test = Math.random(10), 2000); //hack-for-reactivity
     this.$watch(
-      vm => [vm.width, vm.height, vm.projection, vm.projectionConfig],
+      vm => [vm.width, vm.height, vm.projection, vm.projectionConfig, vm.svg],
       val => {
         const projection = makeProjection({
           projectionConfig: this.projectionConfig,
@@ -96,6 +105,9 @@ export default {
         });
         this.projectionFunc = projection;
         this.path = geoPath().projection(projection);
+
+        select(this.svg).call(drag(this.projectionFunc, this.path, this.svg));
+        select(this.svg).call(zoom(this.projectionFunc, this.path, this.svg));
       },
       { immediate: true, deep: true }
     );

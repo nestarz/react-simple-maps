@@ -4,8 +4,9 @@
     :height="height"
     :projection="projection"
     :projectionConfig="projectionConfig"
+    :svg="$refs.svg"
   >
-    <svg :viewBox="`0 0 ${width} ${height}`" class="rsm-svg" v-bind="$attrs">
+    <svg :viewBox="`0 0 ${width} ${height}`" class="rsm-svg" v-bind="$attrs" ref="svg">
       <slot />
     </svg>
   </map-provider>

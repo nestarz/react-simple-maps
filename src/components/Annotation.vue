@@ -16,11 +16,13 @@ export default {
     dx: { type: Number, default: 30 },
     dy: { type: Number, default: 30 },
     curve: { type: Number, default: 0 },
-    connectorProps: { type: Object, default: { stroke: "#000" } }
+    connectorProps: { type: Object, default: () => ({ stroke: "#000" }) }
   },
   computed: {
     point() {
       if (!this.context.projection) return { x: 0, y: 0 };
+      console.log("hack-for-reactivity", this.context.test);
+
       const point = this.context.projection(this.subject);
       return {
         x: point[0],
