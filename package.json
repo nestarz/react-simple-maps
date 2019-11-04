@@ -1,39 +1,31 @@
 {
-  "name": "vue-simple-maps",
-  "version": "0.0.0-beta.1",
-  "description": "An svg map chart component built with and for Vue",
-  "module": "dist/index.es.js",
+  "name": "my-lib",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "vue-cli-service build --target lib --name my-lib ./src/index.js",
+    "lint": "vue-cli-service lint",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "peerDependencies": {
+    "vue": "^2.6.10"
+  },
   "files": [
-    "dist"
+    "dist/*.{js,css}"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nestarz/vue-simple-maps.git"
-  },
-  "keywords": [
-    "vue",
-    "maps",
-    "charts",
-    "worldmap",
-    "d3-geo"
-  ],
-  "author": "Elias Rhouzlane <elias.rhouzlane@gmail.com> (https://github.com/nestarz)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/nestarz/vue-simple-maps/issues"
-  },
-  "homepage": "https://github.com/nestarz/vue-simple-maps#readme",
-  "dependencies": {
-    "d3-geo": "^1.11.6",
-    "topojson-client": "^3.0.0"
-  },
   "devDependencies": {
-    "parcel": "^2.0.0-alpha.1.1",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-terser": "^5.1.2",
-    "rollup-plugin-vue": "^5.0.1",
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-eslint": "^3.11.0",
+    "@vue/cli-service": "^3.11.0",
+    "@babel/core": "^7.6.2",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.5.1",
+    "eslint-plugin-vue": "^5.2.3",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.0",
     "vue": "^2.6.10",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "vuepress": "^1.1.0"
   }
 }

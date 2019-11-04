@@ -1,11 +1,2 @@
-
-export { default as ComposableMap } from "./components/ComposableMap.vue"
-export { default as Geographies } from "./components/Geographies.vue"
-export { default as Geography } from "./components/Geography.vue"
-export { default as Graticule } from "./components/Graticule.vue"
-export { default as Sphere } from "./components/Sphere.vue"
-export { default as Marker } from "./components/Marker.vue"
-export { default as Line } from "./components/Line.vue"
-export { default as Annotation } from "./components/Annotation.vue"
-// export { default as ZoomableGroup } from "./components/ZoomableGroup"
-// export { default as useZoomPan } from "./components/useZoomPan"
+export * from './components'
+export * from './install'
