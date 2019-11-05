@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Demo app</title>
+  </head>
+  <body>
+    <div id="app">
+      <map-composable
+        :projection="projection"
+        :projection-config="projectionConfig"
+      >
+        <template v-slot:default="{path, projectionFunc}">
+          <map-geographies
+            :geography="geoUrl"
+            :path="path"
+            :projection="projectionFunc"
+          >
+            <template v-slot:default="{geographies}">
+              <map-geography
+                v-for="geo in geographies"
+                :key="geo.rsmKey"
+                :geography="geo"
+                fill="white"
+                stroke="blue"
+              ></geography>
+            </template>
+          </map-geographies>
+          <map-line :from="[0, 1]" :to="[-100, 120]"></map-line>
+          <map-annotation :subject="[0, 1]" :dx="0" :dy="0">
+            <text :x="-8">Test</text>
+          </map-annotation>
+        </template>
+      </map-composable>
+    </div>
+  </body>
+
+  <script src="./vue@2.6.0.js"></script>
+  <script src="../dist/my-lib.umd.js"></script>
+  <script>
+    console.log(window["my-lib"]);
+    var app = new Vue({
+      el: "#app",
+      data() {
+        return {
+          projectionConfig: {
+            rotate: [0, 0],
+            scale: 200
+          },
+          projection: "geoMercator",
+          geoUrl:
+            "./word-110m.json"
+        };
+      }
+    });
+  </script>
+</html>

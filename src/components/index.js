@@ -1,7 +1,11 @@
-import ComponentA from './ComponentA.vue'
-import ComponentB from './ComponentB.vue'
 
-export {
-  ComponentA,
-  ComponentB
-}
+export { default as MapComposable } from "./ComposableMap.vue"
+export { default as MapGeographies } from "./Geographies.vue"
+export { default as MapGeography } from "./Geography.vue"
+export { default as MapGraticule } from "./Graticule.vue"
+export { default as MapSphere } from "./Sphere.vue"
+export { default as MapMarker } from "./Marker.vue"
+export { default as MapLine } from "./Line.vue"
+export { default as MapAnnotation } from "./Annotation.vue"
+// export { default as ZoomableGroup } from "./ZoomableGroup"
+// export { default as useZoomPan } from "./useZoomPan"

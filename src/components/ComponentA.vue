@@ -3,11 +3,13 @@
 </template>
 
 <script>
+import { ref } from "@vue/composition-api";
+
 export default {
-  data: function () {
+  setup() {
     return {
-      count: 0
-    }
+      count: ref(0)
+    };
   }
-}
+};
 </script>
