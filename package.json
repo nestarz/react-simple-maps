@@ -1,10 +1,10 @@
 {
-  "name": "my-lib",
+  "name": "vue-simple-maps",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vue-cli-service build --watch --target lib --name my-lib ./src/index.js",
-    "build": "vue-cli-service build --target lib --name my-lib ./src/index.js",
+    "dev": "vue-cli-service build --watch --target lib --name vue-simple-maps ./src/index.js",
+    "build": "vue-cli-service build --target lib --name vue-simple-maps ./src/index.js",
     "lint": "vue-cli-service lint",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"

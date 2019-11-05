@@ -114,10 +114,6 @@ export default {
       );
     });
 
-    watch([path, update], () => {
-      console.log("okla");
-    });
-
     return {
       path,
       projectionFunc

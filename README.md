@@ -1,59 +1,33 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/b1b84831-789e-4629-a9e3-55a36e136653/deploy-status)](https://app.netlify.com/sites/sharp-babbage-154f0a/deploys)
 
-# Vue Component Library Starter
+<img src="https://img.shields.io/bundlephobia/minzip/vue-simple-maps@0.0.0-beta.0?color=%2328cb95&label=gzip" />
 
-> Create your own component library with [Vue CLI 3](https://cli.vuejs.org/) and [VuePress](https://vuepress.vuejs.org/).
+# vue-simple-maps
+Create beautiful SVG maps in Vue with d3-geo and topojson using a declarative api.
 
-Sooner or later, you will find that creating a component library is much better than having all components inside your app project. A component library force you remove app specific logic from your components, makes it possible to reuse them in other apps. 
+### Why
 
-Once the components are in a libraray, documentation becomes critical. This starter project includes a documentation app powered by VuePress. It not only documents the usage of the component, but also provides a testing bed during the development of components. See the generated documentation app [here](https://sharp-babbage-154f0a.netlify.com/).
+`vue-simple-maps` aims to make working with svg maps in react easier. It handles tasks such as panning, zooming and simple rendering optimization, and takes advantage of parts of [d3-geo](https://github.com/d3/d3-geo) and topojson-client instead of relying on the entire d3 library.
 
-## Setup
+### Install
 
-``` bash
-# install dependencies
-npm install
+To install `vue-simple-maps`
 
-# start the doc app with hot reload, great for testing components
-npm run docs:dev
-
-# build the library, available under dist
-npm run build
-
-# build the doc app, available under docs/.vuepress/dist
-npm run docs:build
+```bash
+$ npm install --save vue-simple-maps@0.0.0-beta.0
 ```
 
+...or if you use yarn:
 
-## Use your component library
-
-You may publish your component library to NPM repository. If you prefer to use/test your component library locally in a client app, you may use `npm link` or [install-local](https://github.com/nicojs/node-install-local).
-
-If your app is not using a bundler, the following is the example of how to use the library in vanilla HTML page.
-
-```html
-<!DOCTYPE html>
-<html>
-  <head><title>Demo app</title></head>
-  <body>
-    <div id="app">
-      <p>Component A: <component-a/></p>
-      <p>Component B: <component-b @click="onClick"/></p>
-    </div>
-  </body>
-
-  <script src="https://unpkg.com/vue"></script>
-  <script src="dist/my-lib.umd.js"></script>
-  <script>
-      console.log(window['my-lib'])
-      var app = new Vue({
-        el: '#app',
-        methods: {
-          onClick (message) {
-            alert(message)
-          }
-        }
-      })
-    </script>
-</html>
+```bash
+$ yarn add vue-simple-maps@0.0.0-beta.0
 ```
+
+### Usage
+
+`vue-simple-maps` exposes a set of components that can be combined to create svg maps with markers and annotations. In order to render a map you have to provide a reference to a valid topojson file. You can find example topojson files in the [`topojson-maps` folder](https://github.com/zcreativelabs/vue-simple-maps/tree/master/topojson-maps) or on [topojson world-atlas](https://github.com/topojson/world-atlas). To learn how to make your own topojson maps from shapefiles, please read ["How to convert and prepare TopoJSON files for interactive mapping with d3"](https://hackernoon.com/how-to-convert-and-prepare-topojson-files-for-interactive-mapping-with-d3-499cf0ced5f) on medium.
+
+See `/demo/client.html` for use case example.
+
+Check out the [live example](https://codesandbox.io/s/vue-simple-maps-15ol4)
+
+The above will render a world map using the [equal earth projection](https://observablehq.com/@d3/equal-earth). You can read more about this projection on [Shaded Relief](http://shadedrelief.com/ee_proj/) and on [Wikipedia](https://en.wikipedia.org/wiki/Equal_Earth_projection).
