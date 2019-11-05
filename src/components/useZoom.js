@@ -1,9 +1,7 @@
 import * as d3 from "d3";
 import versor from "versor";
-window.d3 = d3;
 
 const zoom = (projection, path, svg, update) => {
-  window.svg = svg;
   let v0; // Mouse position in Cartesian coordinates at start of drag gesture.
   let r0; // Projection rotation as Euler angles at start.
   let q0; // Projection rotation as versor at start.

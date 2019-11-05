@@ -10,6 +10,8 @@
         :projection-config="projectionConfig"
       >
         <template v-slot:default="{path, projectionFunc}">
+          <map-graticule fill="grey" stroke="white" clipPath="url(#rsm-sphere)"></map-graticule>
+          <map-sphere stroke="#FF5533" :stroke-width="2"></map-sphere>
           <map-geographies
             :geography="geoUrl"
             :path="path"
@@ -24,6 +26,7 @@
                 :geography="geo"
                 fill="white"
                 stroke="blue"
+                clipPath="url(#rsm-sphere)"
               ></geography>
             </template>
           </map-geographies>
@@ -31,6 +34,9 @@
           <map-annotation :subject="[0, 1]" :dx="0" :dy="0">
             <text :x="-8">Test</text>
           </map-annotation>
+          <map-marker :coordinates="[10,1]">
+            <circle r="8" fill="#F53" />
+          </map-marker>
         </template>
       </map-composable>
     </div>
