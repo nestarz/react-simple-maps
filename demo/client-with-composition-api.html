@@ -41,15 +41,15 @@
       </map-composable>
     </div>
   </body>
-
   <script src="./vue@2.6.0.js"></script>
   <script src="https://unpkg.com/@vue/composition-api/dist/vue-composition-api.umd.js"></script>
-
+  
   <script>
-    (async () => {
     Vue.use(vueCompositionApi.default);
-    import("../dist/vue-simple-maps.umd.js").then(plugin => {
-      console.log(plugin);
+  </script>
+  <script src="../dist/vue-simple-maps.umd.js"></script>
+  
+  <script>
       var app = new Vue({
       el: "#app",
       data() {
@@ -66,8 +66,6 @@
         };
       }
     });
-    })
-  })();
   </script>
 </html>
 
