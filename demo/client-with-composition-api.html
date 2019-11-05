@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Demo app</title>
+  </head>
+  <body>
+    <div id="app">
+      <map-composable
+        :projection="projection"
+        :projection-config="projectionConfig"
+      >
+        <template v-slot:default="{path, projectionFunc}">
+          <map-graticule fill="grey" stroke="white" clipPath="url(#rsm-sphere)"></map-graticule>
+          <map-sphere stroke="#FF5533" :stroke-width="2"></map-sphere>
+          <map-geographies
+            :geography="geoUrl"
+            :path="path"
+            :projection="projectionFunc"
+            :width="width"
+            :height="height"
+          >
+            <template v-slot:default="{geographies}">
+              <map-geography
+                v-for="geo in geographies"
+                :key="geo.rsmKey"
+                :geography="geo"
+                fill="white"
+                stroke="blue"
+                clipPath="url(#rsm-sphere)"
+              ></geography>
+            </template>
+          </map-geographies>
+          <map-line :from="[0, 1]" :to="[-100, 120]"></map-line>
+          <map-annotation :subject="[0, 1]" :dx="0" :dy="0">
+            <text :x="-8">Test</text>
+          </map-annotation>
+          <map-marker :coordinates="[10,1]">
+            <circle r="8" fill="#F53" />
+          </map-marker>
+        </template>
+      </map-composable>
+    </div>
+  </body>
+
+  <script src="./vue@2.6.0.js"></script>
+  <script src="https://unpkg.com/@vue/composition-api/dist/vue-composition-api.umd.js"></script>
+
+  <script>
+    (async () => {
+    Vue.use(vueCompositionApi.default);
+    import("../dist/vue-simple-maps.umd.js").then(plugin => {
+      console.log(plugin);
+      var app = new Vue({
+      el: "#app",
+      data() {
+        return {
+          projectionConfig: {
+            rotate: [0, 0],
+            scale: 200
+          },
+          projection: "geoOrthographic",
+          geoUrl:
+            "./word-110m.json",
+          width: window.innerWidth,
+          height: window.innerHeight
+        };
+      }
+    });
+    })
+  })();
+  </script>
+</html>
+
+
+<style>
+div, svg, html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+</style>
