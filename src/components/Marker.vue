@@ -27,6 +27,7 @@ export default {
   },
   computed: {
     transform() {
+      context.update;
       const [x, y] = this.context.projection(this.coordinates);
       return `translate(${x}, ${y})`;
     }

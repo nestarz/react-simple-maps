@@ -14,6 +14,8 @@
             :geography="geoUrl"
             :path="path"
             :projection="projectionFunc"
+            :width="width"
+            :height="height"
           >
             <template v-slot:default="{geographies}">
               <map-geography
@@ -46,11 +48,22 @@
             rotate: [0, 0],
             scale: 200
           },
-          projection: "geoMercator",
+          projection: "geoOrthographic",
           geoUrl:
-            "./word-110m.json"
+            "./word-110m.json",
+          width: window.innerWidth,
+          height: window.innerHeight
         };
       }
     });
   </script>
 </html>
+
+
+<style>
+div, svg, html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}</style>

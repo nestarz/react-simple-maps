@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import versor from "versor";
 window.d3 = d3;
 
-const zoom = (projection, path, svg) => {
+const zoom = (projection, path, svg, update) => {
   window.svg = svg;
   let v0; // Mouse position in Cartesian coordinates at start of drag gesture.
   let r0; // Projection rotation as Euler angles at start.
@@ -19,6 +19,7 @@ const zoom = (projection, path, svg) => {
       q1 = versor.multiply(q0, versor.delta(v0, v1)),
       r1 = versor.rotation(q1);
     projection.rotate(r1);
+    update.value = Math.random();
 
     // d3.select(svg)
     //   .selectAll("path")
@@ -38,7 +39,7 @@ const zoom = (projection, path, svg) => {
     .on("zoom", zoomed);
 };
 
-const drag = (projection, path, svg) => {
+const drag = (projection, path, svg, update) => {
   let v0; // Mouse position in Cartesian coordinates at start of drag gesture.
   let r0; // Projection rotation as Euler angles at start.
   let q0; // Projection rotation as versor at start.
@@ -62,6 +63,7 @@ const drag = (projection, path, svg) => {
       q1 = versor.multiply(q0, versor.delta(v0, v1)),
       r1 = versor.rotation(q1);
     projection.rotate(r1);
+    update.value = Math.random();
 
     d3.select(svg)
       .selectAll(".point")

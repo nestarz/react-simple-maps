@@ -19,14 +19,15 @@ export default {
     const context = inject(ContextSymbol);
 
     return {
-      lineData: computed(() =>
-        context.path
+      lineData: computed(() => {
+        context.update;
+        return context.path
           ? context.path({
               type: "LineString",
               coordinates: props.coordinates || [props.from, props.to]
             })
-          : ""
-      )
+          : "";
+      })
     };
   }
 };

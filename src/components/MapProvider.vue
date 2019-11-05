@@ -79,18 +79,20 @@ export default {
   setup(props) {
     const svg = computed(() => props.svg);
     const projectionConfig = computed(() => props.projectionConfig);
-    const projectionName = computed(() => props.projectionName);
+    const projectionName = computed(() => props.projection);
     const width = computed(() => props.width);
     const height = computed(() => props.height);
 
     const projectionFunc = ref(null);
     const path = computed(() => geoPath().projection(projectionFunc.value));
+    const update = ref(false);
 
     provide(
       ContextSymbol,
       reactive({
-        projectionFunc,
-        path
+        projection: projectionFunc,
+        path,
+        update
       })
     );
 
@@ -104,15 +106,16 @@ export default {
     });
 
     watch([svg], () => {
-      console.log("okla");
-      select(svg.value).call(drag(projectionFunc.value, path.value, svg.value));
-      select(svg.value).call(zoom(projectionFunc.value, path.value, svg.value));
+      select(svg.value).call(
+        drag(projectionFunc.value, path.value, svg.value, update)
+      );
+      select(svg.value).call(
+        zoom(projectionFunc.value, path.value, svg.value, update)
+      );
     });
 
-    watch([projectionFunc, path], () => {
+    watch([path, update], () => {
       console.log("okla");
-      select(svg.value).call(drag(projectionFunc.value, path.value, svg.value));
-      select(svg.value).call(zoom(projectionFunc.value, path.value, svg.value));
     });
 
     return {

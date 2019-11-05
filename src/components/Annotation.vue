@@ -22,7 +22,7 @@ export default {
   setup(props) {
     const context = inject(ContextSymbol);
     const point = computed(() => {
-      console.log("ok");
+      context.update;
       if (!context.projection) return { x: 0, y: 0 };
 
       const [x, y] = context.projection(props.subject);

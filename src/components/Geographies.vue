@@ -25,9 +25,10 @@ export default {
 
     const features = ref(null);
     const geography = computed(() => props.geography);
-    const geographies = computed(() =>
-      prepareFeatures(features.value, context.path)
-    );
+    const geographies = computed(() => {
+      context.update;
+      return prepareFeatures(features.value, context.path);
+    });
 
     const setup = () => {
       if (typeof window === `undefined`) return;
